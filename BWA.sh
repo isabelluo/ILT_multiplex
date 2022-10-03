@@ -3,7 +3,6 @@
 current_directory=$(pwd)
 refdir=$(/home/garcialab/BWA_reference/)
 mkdir $current_directory/cat_Assembly
-mkdir $current_directory/cat_Assembly
 source activate ngs_env
 
 # cat *.fasta | bwa index -p catted .commands to create concatenated index out of 16 files
@@ -17,10 +16,13 @@ done
 
 while read i
 do
-	reads=`samtools 24seqref.sort.bam $i | wc -l`
-	echo " $reads is the hit of $i" >> hits.txt
+	for j in *.bam
+	do
+		reads=`samtools $j $i | wc -l`
+		echo " $reads is the hit of $i" >> ${j:0:-4}_hits.txt
+		head -16 ${j:0:-4}_hits.txt > ${j:0:-4}_hits.txt
+	done
 done < /home/garcialab/BWA_reference/cat_US/US_16_name.txt
-tail -16 hits.txt > hits.txt
 
 
 for i in *.bam
