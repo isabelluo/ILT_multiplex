@@ -4,7 +4,7 @@ current_directory=$(pwd)
 refdir=$(/home/garcialab/BWA_reference/)
 mkdir $current_directory/cat_Assembly
 mkdir $current_directory/cat_Assembly
-conda activate ngs_env
+source activate ngs_env
 
 # cat *.fasta | bwa index -p catted .commands to create concatenated index out of 16 files
 for i in *.fastq
