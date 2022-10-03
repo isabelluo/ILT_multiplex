@@ -14,15 +14,15 @@ done
 #sort command will sort the imput reads in genome order
  # going straight to bam should be faster. Works in less than 3 min. I have compared, there is no difference.
 
-while read i
+while read -r line
 do
 	for j in *.bam
 	do
-		reads=`samtools $j $i | wc -l`
-		echo " $reads is the hit of $i" >> ${j:0:-4}_hits.txt
+		reads=`samtools $j $line | wc -l`
+		echo " $reads is the hit of $line" >> ${j:0:-4}_hits.txt
 		head -16 ${j:0:-4}_hits.txt > ${j:0:-4}_hits.txt
 	done
-done < /home/garcialab/BWA_reference/cat_US/US_16_name.txt
+done < $refdir/cat_US/US_16_name.txt
 
 
 for i in *.bam
@@ -30,5 +30,5 @@ do
 	samtools flagsta $i > ${i:0:-4}_sams_stat.txt
 	samtools depth -a $i | awk '{c++;s+=$3}END{print s/c " average depth"}' >> ${i:0:-4}_sams_stat.txt
 	samtools depth -a $i | awk '{c++; if($3>200) total+=1}END{print (total/c)*100 " breadth of 200x coverage"}' >> ${i:0:-4}_sams_stat.txt
-	#samtools mpileup -aa -A -d 10000000 -Q 20 $i  | bcftools consensus -f $refdir/cat_US/catted_USregion.fasta > ${i:0:-4}_consensus.fa
+	samtools mpileup -aa -A -d 10000000 -Q 20 $i  | bcftools consensus -f $refdir/cat_US/catted_USregion.fasta > ${i:0:-4}_consensus.fa
 done
