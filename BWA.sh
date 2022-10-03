@@ -1,7 +1,7 @@
 #! /bin/bash
 
 current_directory=$(pwd)
-refdir=$(/home/garcialab/BWA_reference)
+refdir='/home/garcialab/BWA_reference'
 mkdir $current_directory/cat_Assembly
 source activate ngs_env
 
