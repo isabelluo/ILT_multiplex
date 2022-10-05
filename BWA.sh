@@ -8,16 +8,18 @@ source activate ngs_env
 for i in *.fastq
 do
 	bwa mem -M -t 8 $refdir/cat_US/catted_USregion.fasta $i | samtools sort -o cat_${i}_sort.bam
-	samtools index cat_${i}_sort.bam
+	samtools index cat_${i}_sort.bam # you need a index file for it to find the read counts
 done
 	 # converting alignment sam to binary bam, -S specify input sam, -b specify output bam
 #sort command will sort the imput reads in genome order
  # going straight to bam should be faster. Works in less than 3 min. I have compared, there is no difference.
+# try this in the future: samtools coverage -r chr1:1M-12M input.bam
 
 while read -r line
 do
 	for j in *.bam
 	do
+		echo " " >${j:0:-4}_hits.txt
 		reads=`samtools view $j $line | wc -l`
 		echo " $reads is the hit of $line" >> ${j:0:-4}_hits.txt
 	done
