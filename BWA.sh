@@ -2,13 +2,13 @@
 
 current_directory=$(pwd)
 refdir='/home/garcialab/BWA_reference'
-mkdir $current_directory/cat_Assembly
 source activate ngs_env
 
 # cat *.fasta | bwa index -p catted .commands to create concatenated index out of 16 files
 for i in *.fastq
 do
 	bwa mem -M -t 8 $refdir/cat_US/catted_USregion.fasta $i | samtools sort -o cat_${i}_sort.bam
+	samtools index cat_${i}_sort.bam
 done
 	 # converting alignment sam to binary bam, -S specify input sam, -b specify output bam
 #sort command will sort the imput reads in genome order
