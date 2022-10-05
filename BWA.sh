@@ -40,4 +40,4 @@ done
 while read -r line
 do
 	samtools mpileup -aa -A -d 10000000 -Q 20 -r $line cat_BC04_ILTV_ReadIDs.fastq_sort.bam | ivar consensus -t .8 -m 20 -p $line
-done
+done<$refdir/cat_US/US_16_name.txt
