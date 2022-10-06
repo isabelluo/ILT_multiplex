@@ -29,7 +29,7 @@ do
 		samtools flagstat $j >> ${J:0:4}/${j:0:-4}_hits.txt
 		samtools depth -a $j | awk '{c++;s+=$3}END{print s/c " average depth"}' >> ${J:0:4}/${j:0:-4}_hits.txt
 		samtools depth -a $j | awk '{c++; if($3>20) total+=1}END{print (total/c)*100 " breadth of 20x coverage"}' >> ${J:0:4}/${j:0:-4}_hits.txt
-done <$refdir/cat_US/US_16_name.txt
+done<$refdir/cat_US/US_16_name.txt
 
 
 while read -r line
@@ -40,4 +40,4 @@ do
 		cd contig/${i:0:4}_contig
 		samtools mpileup -aa -A -d 10000000 -Q 20 -r $line $i | ivar consensus -t .8 -m 20 -p ${i:0:4}_$line
 	done
-done <$refdir/cat_US/US_16_name.txt
+done<$refdir/cat_US/US_16_name.txt
