@@ -41,4 +41,4 @@ do
 		cd contig/${i:0:4}_contig
 		samtools mpileup -aa -A -d 10000000 -Q 20 -r $line $i | ivar consensus -t .8 -m 20 -p ${i:0:4}_$line
 	done
-done<$refdir/cat_US/US_16_name.txt
+done <$refdir/cat_US/US_16_name.txt
