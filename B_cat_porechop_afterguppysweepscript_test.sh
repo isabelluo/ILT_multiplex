@@ -7,8 +7,8 @@ do
     then
         cd $current_directory/fastq/$i/pass/ # copy and paste your current path before i
         cat *.fastq > ${i}_all.fastq
-        porechop -i ${i}_all.fastq -b ${i}_chop_fastq  --require_two_barcodes \
-        --require_two_barcodes --extra_end_trim 21 --adapter_threshold 99 --check_reads 1000000 > ${i}_porechopped_output.txt
+        porechop -i ${i}_all.fastq -b ${i}_chop_fastq \
+        --require_two_barcodes --extra_end_trim 21 --adapter_threshold 50 --check_reads 1000000 > ${i}_porechopped_output.txt
         echo "${i} fastq folder done"
         ((i++))
     else
