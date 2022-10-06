@@ -15,4 +15,5 @@ do
         echo "current fastq folder ${i}"
         sleep 10
     fi
+done
     #try 200 seconds to begin with
