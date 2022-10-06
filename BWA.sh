@@ -7,8 +7,8 @@ BWA=$current_directory/for_BWA
 
 # cat *.fasta | bwa index -p catted .commands to create concatenated index out of 16 files
 #faidx catted fasta files to create indexing for mpileup
-
-for i in $BWA/*.fastq
+cd $BWA
+for i in *.fastq
 do
 	bwa mem -M -t 8 $refdir/cat_US/catted_USregion.fasta $i | samtools sort -o ${i:0:4}_sort.bam
 	samtools index ${i:0:4}_sort.bam # you need a index file for it to find the read counts
@@ -18,7 +18,6 @@ done
 #sort command will sort the imput reads in genome order
  # going straight to bam should be faster. Works in less than 3 min. I have compared, there is no difference.
 # try this in the future: samtools coverage -r chr1:1M-12M input.bam
-cd $BWA
 while read -r line
 do
 	for j in *.bam
