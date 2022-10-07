@@ -22,22 +22,29 @@ while read -r line
 do
 	for j in *.bam
 	do
-		mkdir ${J:0:4}_statistics
-		echo " " >${J:0:4}/${j:0:-4}_hits.txt
+		mkdir ${j:0:4}_statistics
+		echo " " >${j:0:4}_statistics/${j:0:-4}_hits.txt
 		reads=`samtools view $j $line | wc -l`
-		echo " $reads is the hit of $line" >> ${J:0:4}/${j:0:-4}_hits.txt
-		samtools flagstat $j >> ${J:0:4}/${j:0:-4}_hits.txt
-		samtools depth -a $j | awk '{c++;s+=$3}END{print s/c " average depth"}' >> ${J:0:4}/${j:0:-4}_hits.txt
-		samtools depth -a $j | awk '{c++; if($3>20) total+=1}END{print (total/c)*100 " breadth of 20x coverage"}' >> ${J:0:4}/${j:0:-4}_hits.txt
+		echo " $reads is the hit of $line" >> ${j:0:4}_statistics/${j:0:-4}_hits.txt
+
+
 done<$refdir/cat_US/US_16_name.txt
 
+for j in *.bam
+do
+	samtools depth -a $j | awk '{c++;s+=$3}END{print s/c " average depth"}' > ${j:0:4}_statistics/${j:0:-4}_stats.txt
+	samtools depth -a $j | awk '{c++; if($3>20) total+=1}END{print (total/c)*100 " breadth of 20x coverage"}' > ${j:0:4}_statistics/${j:0:-4}_stats.txt
+	samtools flagstat $j >> ${j:0:4}_statistics/${j:0:-4}_hits.txt
+done
 
 while read -r line
 do
 	for i in *.bam
 	do
-		mkdir contig/${i:0:4}_contig
-		cd contig/${i:0:4}_contig
+		mkdir ${i:0:4}_contig
 		samtools mpileup -aa -A -d 10000000 -Q 20 -r $line $i | ivar consensus -t .8 -m 20 -p ${i:0:4}_$line
+		cat *.fa > ${i:0:4}.fa
+		mv *.fa ${i:0:4}_contig
+		mv *.txt ${i:0:4}_contig
 	done
 done<$refdir/cat_US/US_16_name.txt
