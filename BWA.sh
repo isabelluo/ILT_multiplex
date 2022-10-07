@@ -26,8 +26,7 @@ do
 		echo " " >${j:0:4}_statistics/${j:0:-4}_hits.txt
 		reads=`samtools view $j $line | wc -l`
 		echo " $reads is the hit of $line" >> ${j:0:4}_statistics/${j:0:-4}_hits.txt
-
-
+	done
 done<$refdir/cat_US/US_16_name.txt
 
 for j in *.bam
