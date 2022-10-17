@@ -4,7 +4,6 @@ current_directory=$(pwd)
 refdir='/home/garcialab/BWA_reference'
 source activate ngs_env
 BWA=$current_directory/for_BWA
-
 # cat *.fasta | bwa index -p catted .commands to create concatenated index out of 16 files
 #faidx catted fasta files to create indexing for mpileup
 cd $BWA
