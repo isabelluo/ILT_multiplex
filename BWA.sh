@@ -9,8 +9,9 @@ BWA=$current_directory/for_BWA
 cd $BWA
 for i in *.fastq
 do
-	bwa mem -M -t 8 $refdir/cat_US/catted_USregion.fasta $i | samtools sort -o ${i:0:4}_sort.bam
-	samtools index ${i:0:4}_sort.bam # you need a index file for it to find the read counts
+	seqkit rmdup $i -s -o ${i}_clean_.fastq
+	bwa mem -M -t 8 $refdir/cat_US/catted_USregion.fasta ${i}_clean_.fastq | samtools sort -o ${i:0:4}_clean_sort.bam
+	samtools index ${i:0:4}_clean_sort.bam # you need a index file for it to find the read counts
 done
 	 # converting alignment sam to binary bam, -S specify input sam, -b specify output bam
 
@@ -46,3 +47,6 @@ do
 		mv *.txt ${i:0:4}_contig
 	done
 done<$refdir/cat_US/US_16_name.txt
+
+# samtools tview -p US01:100 *bam -- reference /home/garcialab/BWA_reference/cat_US/catted_USregion.fasta
+# viewing alignment, can specify the primer pairs that wants to view and the location of that particular pair to start.
