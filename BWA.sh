@@ -9,10 +9,11 @@ BWA=$current_directory/for_BWA
 cd $BWA
 for i in *.fastq
 do
-	seqkit rmdup $i -s -o ${i}_clean_.fastq
+	seqkit rmdup $i -s -o ${i}_clean_.fastq #  I found that If I repeatedly run script C, the reads will be added repeatedly
 	bwa mem -M -t 8 $refdir/cat_US/catted_USregion.fasta ${i}_clean_.fastq | samtools sort -o ${i:0:4}_clean_sort.bam
 	samtools index ${i:0:4}_clean_sort.bam # you need a index file for it to find the read counts
-done
+	bcftools mpileup -Oz --threads 6 --min-MQ 60 -f $refdir/cat_US/catted_USregion.fasta ${i:0:4}_clean_sort.bam |\
+	bcftools call --threads 6 -mv -Ou --ploidy 1 - | bcftools filter -Oz -e 'QUAL<40 || DP<10' > ${i:0:4}_clean_sort.callfilter.onestep.vcf.gz
 	 # converting alignment sam to binary bam, -S specify input sam, -b specify output bam
 
 #sort command will sort the imput reads in genome order
@@ -35,7 +36,7 @@ do
 	samtools depth -a $j | awk '{c++; if($3>20) total+=1}END{print (total/c)*100 " breadth of 20x coverage"}' > ${j:0:4}_statistics/${j:0:-4}_stats.txt
 	samtools flagstat $j >> ${j:0:4}_statistics/${j:0:-4}_hits.txt
 done
-
+###### generate overview of mapped reads #####
 while read -r line
 do
 	for i in *.bam
@@ -47,6 +48,6 @@ do
 		mv *.txt ${i:0:4}_contig
 	done
 done<$refdir/cat_US/US_16_name.txt
-
+###generate consensus to inport to IGV or geneious #####
 # samtools tview -p US01:100 *bam -- reference /home/garcialab/BWA_reference/cat_US/catted_USregion.fasta
 # viewing alignment, can specify the primer pairs that wants to view and the location of that particular pair to start.
