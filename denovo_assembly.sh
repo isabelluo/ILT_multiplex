@@ -11,7 +11,7 @@
 
 mkdir /work/mg2lab/denovo_canu.dir
 mkdir /work/mg2lab/denovo_canu.dir/correct_trim.dir
-OUTDIR="/work/mg2lab/denovo_canu.dir/trim.dir"
+OUTDIR="/work/mg2lab/denovo_canu.dir/correct_trim.dir"
 REFDIR="/work/mg2lab/MinIONdata"
 DATA=`ls /work/mg2lab/MinIONdata | grep *.fastq`
 
