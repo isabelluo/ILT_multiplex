@@ -11,7 +11,7 @@
 
 OUTDIR="/work/mg2lab/denovo_canu.dir/correct_trim.dir"
 REFDIR="/work/mg2lab/MinIONdata"
-DATA=`ls /work/mg2lab/MinIONdata | grep *.fastq`
+DATA=`ls /work/mg2lab/MinIONdata | grep .fastq`
 
 module load canu/1.9-GCCcore-8.3.0-Java-11 MUMmer/4.0.0beta2-foss-2019b QUAST/5.0.2-foss-2019b-Python-3.7.4
 ###########set up variables and downlaod references#########
