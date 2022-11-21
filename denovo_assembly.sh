@@ -18,7 +18,7 @@ module load canu/1.9-GCCcore-8.3.0-Java-11 MUMmer/4.0.0beta2-foss-2019b QUAST/5.
 for i in $DATA
 do
   mkdir $OUTDIR/${i:0:(-6)}.dir
-  canu -p ${i:0:(-6)} -d $OUTDIR/${i:0:(-6)}.dir genomeSize=13k useGrid=false -nanopore-raw $i
+  canu -p ${i:0:(-6)} -d $OUTDIR/${i:0:(-6)}.dir genomeSize=13k useGrid=false -nanopore-raw $REFDIR/$i
   quast.py -o $OUTDIR/${i:0:(-6)}.dir -t 6 -r $REFDIR/24_sequence_USregion_cons.fasta $i
   nucmer $REFDIR/24_sequence_USregion_cons.fasta $OUTDIR/${i:0:(-6)}.dir/${i:0:(-6)}.contigs.fasta -p mum_canu_${i:0:(-6)}
   delta-filter -1 $OUTDIR/${i:0:(-6)}.dir/mum_canu_${i:0:(-6)}.delta > $OUTDIR/${i:0:(-6)}.dir/mum_canu_${i:0:(-6)}.1delta
