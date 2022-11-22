@@ -9,6 +9,8 @@
 #SBATCH --error=err.log.%j
 #SBATCH --mail-user=yl87482@uga.edu                    # Where to send mail (replace cbergman with your myid)
 #SBATCH --mail-type=END,FAIL                            # Mail events (BEGIN, END, FAIL, ALL)
+mkdir /work/mg2lab/denovo_canu.dir/
+mkdir /work/mg2lab/denovo_canu.dir/correct_trim.dir
 
 OUTDIR="/work/mg2lab/denovo_canu.dir/correct_trim.dir"
 REFDIR="/work/mg2lab/MinIONdata"
