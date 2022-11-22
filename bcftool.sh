@@ -10,8 +10,8 @@
 #SBATCH --mail-type=END,FAIL                            # Mail events (BEGIN, END, FAIL, ALL)
 
 module load BWA/0.7.17-GCC-8.3.0 SAMtools/1.10-GCC-8.3.0 BCFtools/1.10.2-GCC-8.3.0
-mkdir work/mg2lab/bcf.dir
-mkdir work/mg2lab/bcf.dir/untrim.dir
+mkdir /work/mg2lab/bcf.dir
+mkdir /work/mg2lab/bcf.dir/untrim.dir
 OUTDIR="/work/mg2lab/bcf.dir/untrim.dir"
 REFDIR="/work/mg2lab/MinIONdata"
 DATA=`ls /work/mg2lab/MinIONdata | grep .fastq`
