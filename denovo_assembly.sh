@@ -21,8 +21,8 @@ module load canu/1.9-GCCcore-8.3.0-Java-11 MUMmer/4.0.0beta2-foss-2019b QUAST/5.
 for i in $DATA
 do
   mkdir $OUTDIR/${i:0:(-6)}.dir
-  canu -p ${i:0:(-6)} -d $OUTDIR/${i:0:(-6)}.dir genomeSize=13k useGrid=false minReadLength=500 -nanopore-corrected $REFDIR/$i # mininum require 500
-  quast.py -o $OUTDIR/${i:0:(-6)}.dir -t 6 -r $REFDIR/24_sequence_USregion_cons.fasta $i
+  time canu -p ${i:0:(-6)} -d $OUTDIR/${i:0:(-6)}.dir genomeSize=13k useGrid=false minReadLength=500 -nanopore-corrected $REFDIR/$i # mininum require 500
+  quast.py -o $OUTDIR/${i:0:(-6)}.dir/quastout -t 6 -r $REFDIR/24_sequence_USregion_cons.fasta $i
   nucmer $REFDIR/24_sequence_USregion_cons.fasta $OUTDIR/${i:0:(-6)}.dir/${i:0:(-6)}.contigs.fasta -p $OUTDIR/${i:0:(-6)}.dir/mum_canu_${i:0:(-6)}
   delta-filter -1 $OUTDIR/${i:0:(-6)}.dir/mum_canu_${i:0:(-6)}.delta > $OUTDIR/${i:0:(-6)}.dir/mum_canu_${i:0:(-6)}.1delta
   mummerplot --size large -layout --color -f --png $OUTDIR/${i:0:(-6)}.dir/mum_canu_${i:0:(-6)}.1delta -p $OUTDIR/${i:0:(-6)}.dir/mplot_${i:0:(-6)}
