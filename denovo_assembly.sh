@@ -24,6 +24,7 @@ do
   time canu -p ${i:0:(-6)} -d $OUTDIR/${i:0:(-6)}.dir genomeSize=13k useGrid=false minReadLength=500 -nanopore-corrected $REFDIR/$i # mininum require 500
   quast.py -o $OUTDIR/${i:0:(-6)}.dir/quastout -t 6 -r $REFDIR/24_sequence_USregion_cons.fasta $i
   nucmer $REFDIR/24_sequence_USregion_cons.fasta $OUTDIR/${i:0:(-6)}.dir/${i:0:(-6)}.contigs.fasta -p $OUTDIR/${i:0:(-6)}.dir/mum_canu_${i:0:(-6)}
+  show-coords $OUTDIR/${i:0:(-6)}.dir/mum_canu_${i:0:(-6)}.delta > $OUTDIR/${i:0:(-6)}.dir/mum_canu_${i:0:(-6)}.delta.coords
   delta-filter -1 $OUTDIR/${i:0:(-6)}.dir/mum_canu_${i:0:(-6)}.delta > $OUTDIR/${i:0:(-6)}.dir/mum_canu_${i:0:(-6)}.1delta
   mummerplot --size large -layout --color -f --png $OUTDIR/${i:0:(-6)}.dir/mum_canu_${i:0:(-6)}.1delta -p $OUTDIR/${i:0:(-6)}.dir/mplot_${i:0:(-6)}
 done
