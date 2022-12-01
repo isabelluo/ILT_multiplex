@@ -28,6 +28,6 @@ do
   bcftools filter -Oz -e 'QUAL<40 || DP<10' $OUTDIR/${i:0:(-6)}.dir/${i:0:(-6)}.mpileup.call.vcf.gz > $OUTDIR/${i:0:(-6)}.dir/${i:0:(-6)}.mpileup.call.filter.vcf.gz
   bcftools index $OUTDIR/${i:0:(-6)}.dir/${i:0:(-6)}.mpileup.call.vcf.gz
   bcftools index $OUTDIR/${i:0:(-6)}.dir/${i:0:(-6)}.mpileup.call.filter.vcf.gz
-  bcftools consensus -f $REFDIR/24_sequence_USregion_cons.fasta -o $OUTDIR/${i:0:(-6)}.dir/${i:0:(-6)}.mpileup.call.fasta $OUTDIR/${i:0:(-6)}.dir/${i:0:(-6)}.mpileup.call.vcf.gz
-  bcftools consensus -f $REFDIR/24_sequence_USregion_cons.fasta -o $OUTDIR/${i:0:(-6)}.dir/${i:0:(-6)}.mpileup.filter.fasta $OUTDIR/${i:0:(-6)}.dir/${i:0:(-6)}.mpileup.call.filter.vcf.gz
+  time bcftools consensus -f $REFDIR/24_sequence_USregion_cons.fasta -o $OUTDIR/${i:0:(-6)}.dir/${i:0:(-6)}.mpileup.call.fasta $OUTDIR/${i:0:(-6)}.dir/${i:0:(-6)}.mpileup.call.vcf.gz
+  time bcftools consensus -f $REFDIR/24_sequence_USregion_cons.fasta -o $OUTDIR/${i:0:(-6)}.dir/${i:0:(-6)}.mpileup.filter.fasta $OUTDIR/${i:0:(-6)}.dir/${i:0:(-6)}.mpileup.call.filter.vcf.gz
 done
