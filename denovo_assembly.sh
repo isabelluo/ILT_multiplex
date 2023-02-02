@@ -22,7 +22,7 @@ for i in $DATA
 do
   mkdir $OUTDIR/${i:0:(-6)}.dir
   time canu -p ${i:0:(-6)} -d $OUTDIR/${i:0:(-6)}.dir genomeSize=13k useGrid=false minReadLength=500 -nanopore-corrected $REFDIR/$i # mininum require 500
-  m -o $OUTDIR/${i:0:(-6)}.dir/quastout -t 6 -r $REFDIR/24_sequence_USregion_cons.fasta $i
+  quast.py -o $OUTDIR/${i:0:(-6)}.dir/quastout -t 6 -r $REFDIR/24_sequence_USregion_cons.fasta $i
   nucmer $REFDIR/24_sequence_USregion_cons.fasta $OUTDIR/${i:0:(-6)}.dir/${i:0:(-6)}.contigs.fasta -p $OUTDIR/${i:0:(-6)}.dir/mum_canu_${i:0:(-6)}
   delta-filter -1 $OUTDIR/${i:0:(-6)}.dir/mum_canu_${i:0:(-6)}.delta > $OUTDIR/${i:0:(-6)}.dir/mum_canu_${i:0:(-6)}.1delta
   show-coords $OUTDIR/${i:0:(-6)}.dir/mum_canu_${i:0:(-6)}.1delta > $OUTDIR/${i:0:(-6)}.dir/mum_canu_${i:0:(-6)}.1delta.coords
