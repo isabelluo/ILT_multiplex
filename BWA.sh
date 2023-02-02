@@ -12,8 +12,6 @@ do
 	seqkit rmdup $i -s -o ${i}_clean_.fastq #  I found that If I repeatedly run script C, the reads will be added repeatedly
 	bwa mem -M -t 8 $refdir/cat_US/catted_USregion.fasta ${i}_clean_.fastq | samtools sort -o ${i:0:4}_clean_sort.bam
 	samtools index ${i:0:4}_clean_sort.bam # you need a index file for it to find the read counts
-	bcftools mpileup -Oz --threads 6 --min-MQ 60 -f $refdir/cat_US/catted_USregion.fasta ${i:0:4}_clean_sort.bam |\
-	bcftools call --threads 6 -mv -Ou --ploidy 1 - | bcftools filter -Oz -e 'QUAL<40 || DP<10' > ${i:0:4}_clean_sort.callfilter.onestep.vcf.gz
 done
 	# "bcftools consensus"
 	 # converting alignment sam to binary bam, -S specify input sam, -b specify output bam
