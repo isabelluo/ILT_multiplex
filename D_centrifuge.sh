@@ -8,8 +8,8 @@ reads=`ls $final_analysis | grep _ReadIDs.txt`
 
 for item in $data
 do
-    centrifuge -p 4 -k 50 -q -x vert_virusALL_08122022_GRCg7b_index -S $final_analysis/${item:0:4}_report.csv --report-file $final_analysis/${item:0:4}_report.tsv $item
-    awk -F'\t' '$1 ~ /Gallid alphaherpesvirus 1|herpesvirus/ {print $2}' $final_analysis/${item:0:4}_report.tsv >> ILTV_TaxID.txt
+  centrifuge -p 4 -k 50 -q -x vert_virusALL_08122022_GRCg7b_index -S $final_analysis/${item:0:4}_report.csv --report-file $final_analysis/${item:0:4}_report.tsv $item
+  awk -F'\t' '$1 ~ /Gallid alphaherpesvirus 1|herpesvirus/ {print $2}' $final_analysis/${item:0:4}_report.tsv >> ILTV_TaxID.txt
 done
 
 
