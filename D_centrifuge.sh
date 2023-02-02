@@ -1,18 +1,16 @@
 #!/bin/bash
 current_directory=$(pwd)
 mkdir for_BWA
-data=`ls final_analysis | grep .fastq`
-summery=`ls final_analysis | grep .csv`
-reads=`ls final_analysis | grep _ReadIDs.txt`
 
-for item in $data
+cd final_analysis
+for item in *fastq
 do
-  centrifuge -p 4 -k 50 -q -x vert_virusALL_08122022_GRCg7b_index -S final_analysis/${item:0:4}_report.csv --report-file final_analysis/${item:0:4}_report.tsv $item
-  awk -F'\t' '$1 ~ /Gallid alphaherpesvirus 1|herpesvirus/ {print $2}' final_analysis/${item:0:4}_report.tsv >> final_analysis/ILTV_TaxID.txt
+  centrifuge -p 4 -k 50 -q -x vert_virusALL_08122022_GRCg7b_index -S ${item:0:4}_report.csv --report-file ${item:0:4}_report.tsv $item
+  awk -F'\t' '$1 ~ /Gallid alphaherpesvirus 1|herpesvirus/ {print $2}' ${item:0:4}_report.tsv >> ILTV_TaxID.txt
 done
 
 
-for c in $summery
+for c in *csv
 do
 	awk 'NR == FNR {
 		 patt[$0]; next
@@ -24,7 +22,7 @@ do
 done
 
 
-for Read in $reads
+for Read in  *_ReadIDs.txt
 do
 	grep -A3 -f $Read ${Read:0:4}.fastq > $current_directory/for_BWA/${Read:0:-4}.fq
 	grep -v -Fx -- -- $current_directory/for_BWA/${Read:0:-4}.fq > $current_directory/for_BWA/${Read:0:-4}.fastq
