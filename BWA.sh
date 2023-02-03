@@ -15,7 +15,7 @@ do
 	samtools index ${i:0:4}_clean_sort.bam # you need a index file for it to find the read counts
 	bcftools mpileup -Oz --threads 6 --min-MQ 60 -f $refdir/cat_US/catted_USregion.fasta ${i:0:4}_clean_sort.bam > $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.vcf.gz
 		# what is the differnece between MQ and Q?
-  bcftools call -Oz -m -v --threads 6 --ploidy 1  ${i:0:4}_clean_sort_mpileup.bam \
+  bcftools call -Oz -m -v --threads 6 --ploidy 1  ${i:0:4}_clean_sort.bam \
 	$BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.vcf.gz > $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.call.vcf.gz ## what is -MQ vs QUAL at calls
   bcftools filter -Oz -e 'QUAL<40 || DP<10'$BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.call.vcf.gz > $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.call.filter.vcf.gz
   bcftools index $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.call.vcf.gz
