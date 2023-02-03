@@ -13,15 +13,15 @@ do
 	seqkit rmdup $i -s -o ${i}_clean_.fq #  I found that If I repeatedly run script C, the reads will be added repeatedly
 	bwa mem -M -t 8 $refdir/cat_US/catted_USregion.fasta ${i}_clean_.fq | samtools sort -o ${i:0:4}_clean_sort.bam
 	samtools index ${i:0:4}_clean_sort.bam # you need a index file for it to find the read counts
-	bcftools mpileup -Oz --threads 6 --min-MQ 60 -f $REFDIR/cat_US/catted_USregion.fasta ${i:0:4}_clean_sort.bam > $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.vcf.gz
+	bcftools mpileup -Oz --threads 6 --min-MQ 60 -f $refdir/cat_US/catted_USregion.fasta ${i:0:4}_clean_sort.bam > $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.vcf.gz
 		# what is the differnece between MQ and Q?
   bcftools call -Oz -m -v --threads 6 --ploidy 1  ${i:0:4}_clean_sort_mpileup.bam \
 	$BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.vcf.gz > $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.call.vcf.gz ## what is -MQ vs QUAL at calls
   bcftools filter -Oz -e 'QUAL<40 || DP<10'$BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.call.vcf.gz > $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.call.filter.vcf.gz
   bcftools index $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.call.vcf.gz
   bcftools index $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.call.filter.vcf.gz
-  bcftools consensus -f $REFDIR/cat_US/catted_USregion.fasta $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.call.vcf.gz > $BWA/bcf.dir/${i:0:4}_call_consensus.fa
-  bcftools consensus -f $REFDIR/cat_US/catted_USregion.fasta $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.call.filter.vcf.gz > $BWA/bcf.dir/${i:0:4}_call.filter.consensus.fa
+  bcftools consensus -f $refdir/cat_US/catted_USregion.fasta $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.call.vcf.gz > $BWA/bcf.dir/${i:0:4}_call_consensus.fa
+  bcftools consensus -f $refdir/cat_US/catted_USregion.fasta $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.call.filter.vcf.gz > $BWA/bcf.dir/${i:0:4}_call.filter.consensus.fa
 done
 	# "bcftools consensus"
 	 # converting alignment sam to binary bam, -S specify input sam, -b specify output bam
