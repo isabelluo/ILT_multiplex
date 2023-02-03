@@ -71,10 +71,10 @@ do
 	for i in *.bam
 	do
 		mkdir ${i:0:4}_15x_contig
-		samtools mpileup -aa -A -d 10000000 -Q 20 -r $line $i | ivar consensus -t .8 -m 15 -p ${i:0:4}_15x_$line
-		cat *.fa > ${i:0:4}.fa
-		mv *.fa ${i:0:4}_15x_contig
-		mv *.txt ${i:0:4}_15x_contig
+		samtools mpileup -aa -A -d 10000000 -Q 20 -r $line $i | ivar consensus -t .8 -m 15 -p ${i:0:4}_${line}_15x
+		cat *15x.fa > ${i:0:4}_15x.fa
+		mv *15x.fa ${i:0:4}_15x_contig
+		mv *15x.txt ${i:0:4}_15x_contig
 	done
 done<$refdir/cat_US/US_16_name.txt
 ###
