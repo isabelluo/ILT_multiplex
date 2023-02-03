@@ -12,6 +12,16 @@ do
 	seqkit rmdup $i -s -o ${i}_clean_.fq #  I found that If I repeatedly run script C, the reads will be added repeatedly
 	bwa mem -M -t 8 $refdir/cat_US/catted_USregion.fasta ${i}_clean_.fq | samtools sort -o ${i:0:4}_clean_sort.bam
 	samtools index ${i:0:4}_clean_sort.bam # you need a index file for it to find the read counts
+	bcftools mpileup -Oz --threads 6 --min-MQ 60 -f $REFDIR/cat_US/catted_USregion.fasta ${i:0:4}_clean_sort.bam ## what is -MQ vs QUAL at calls
+	  > $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.vcf.gz
+
+  bcftools call -Oz -m -v --threads 6 --ploidy 1  ${i:0:4}_clean_sort_mpileup.bam \
+	$BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.vcf.gz > $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.call.vcf.gz ## what is -MQ vs QUAL at calls
+  bcftools filter -Oz -e 'QUAL<40 || DP<10'$BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.call.vcf.gz > $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.call.filter.vcf.gz
+  bcftools index $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.call.vcf.gz
+  bcftools index $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.call.filter.vcf.gz
+  bcftools consensus -f $REFDIR/cat_US/catted_USregion.fasta -o $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.call.vcf.gz  $BWA/bcf.dir/${i:0:4}_call_consensus.fa
+  bcftools consensus -f $REFDIR/cat_US/catted_USregion.fasta -o $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.call.filter.vcf.gz $BWA/bcf.dir/${i:0:4}_call.filter.consensus.fa
 done
 	# "bcftools consensus"
 	 # converting alignment sam to binary bam, -S specify input sam, -b specify output bam
@@ -19,9 +29,13 @@ done
 #sort command will sort the imput reads in genome order
  # going straight to bam should be faster. Works in less than 3 min. I have compared, there is no difference.
 # try this in the future: samtools coverage -r chr1:1M-12M input.bam
+for i in *hits.txt
+do
+	echo ""> $if
+done
+
 while read -r line
 do
-echo "" >> ${j:0:4}_statistics/${j:0:-4}_hits.txt
 	for j in *.bam
 	do
 		mkdir ${j:0:4}_statistics
@@ -44,11 +58,23 @@ while read -r line
 do
 	for i in *.bam
 	do
-		mkdir ${i:0:4}_contig
+		mkdir ${i:0:4}_20x_contig
 		samtools mpileup -aa -A -d 10000000 -Q 20 -r $line $i | ivar consensus -t .8 -m 20 -p ${i:0:4}_$line
 		cat *.fa > ${i:0:4}.fa
-		mv *.fa ${i:0:4}_contig
-		mv *.txt ${i:0:4}_contig
+		mv *.fa ${i:0:4}_20x_contig
+		mv *.txt ${i:0:4}_20x_contig
+	done
+done<$refdir/cat_US/US_16_name.txt
+
+while read -r line
+do
+	for i in *.bam
+	do
+		mkdir ${i:0:4}_15x_contig
+		samtools mpileup -aa -A -d 10000000 -Q 20 -r $line $i | ivar consensus -t .8 -m 15 -p ${i:0:4}_$line
+		cat *.fa > ${i:0:4}.fa
+		mv *.fa ${i:0:4}_15x_contig
+		mv *.txt ${i:0:4}_15x_contig
 	done
 done<$refdir/cat_US/US_16_name.txt
 ###
