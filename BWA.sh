@@ -7,6 +7,7 @@ BWA=$current_directory/for_BWA
 # cat *.fasta | bwa index -p catted .commands to create concatenated index out of 16 files
 #faidx catted fasta files to create indexing for mpileup
 cd $BWA
+mkdir bcf.dir
 for i in *.fastq
 do
 	seqkit rmdup $i -s -o ${i}_clean_.fq #  I found that If I repeatedly run script C, the reads will be added repeatedly
@@ -29,10 +30,6 @@ done
 #sort command will sort the imput reads in genome order
  # going straight to bam should be faster. Works in less than 3 min. I have compared, there is no difference.
 # try this in the future: samtools coverage -r chr1:1M-12M input.bam
-for i in *hits.txt
-do
-	echo ""> $if
-done
 
 while read -r line
 do
@@ -74,7 +71,7 @@ do
 		samtools mpileup -aa -A -d 10000000 -Q 20 -r $line $i | ivar consensus -t .8 -m 15 -p ${i:0:4}_${line}_15x
 		cat *15x.fa > ${i:0:4}_15x.fa
 		mv *15x.fa ${i:0:4}_15x_contig
-		mv *15x.txt ${i:0:4}_15x_contig
+		mv *15x.qaul.txt ${i:0:4}_15x_contig
 	done
 done<$refdir/cat_US/US_16_name.txt
 ###
