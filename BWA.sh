@@ -20,8 +20,8 @@ do
   bcftools filter -Oz -e 'QUAL<40 || DP<10'$BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.call.vcf.gz > $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.call.filter.vcf.gz
   bcftools index $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.call.vcf.gz
   bcftools index $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.call.filter.vcf.gz
-  bcftools consensus -f $REFDIR/cat_US/catted_USregion.fasta -o $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.call.vcf.gz  $BWA/bcf.dir/${i:0:4}_call_consensus.fa
-  bcftools consensus -f $REFDIR/cat_US/catted_USregion.fasta -o $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.call.filter.vcf.gz $BWA/bcf.dir/${i:0:4}_call.filter.consensus.fa
+  bcftools consensus -f $REFDIR/cat_US/catted_USregion.fasta $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.call.vcf.gz > $BWA/bcf.dir/${i:0:4}_call_consensus.fa
+  bcftools consensus -f $REFDIR/cat_US/catted_USregion.fasta $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.call.filter.vcf.gz > $BWA/bcf.dir/${i:0:4}_call.filter.consensus.fa
 done
 	# "bcftools consensus"
 	 # converting alignment sam to binary bam, -S specify input sam, -b specify output bam
