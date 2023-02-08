@@ -34,7 +34,6 @@ do
 	for j in *.bam
 	do
 		mkdir ${j:0:4}_statistics
-		echo " " >${j:0:4}_statistics/${j:0:-4}_hits.txt
 		reads=`samtools view $j $line | wc -l`
 		echo " $reads is the hit of $line" >> ${j:0:4}_statistics/${j:0:-4}_hits.txt
 	done
