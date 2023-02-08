@@ -1,7 +1,7 @@
 #! /bin/bash
 
 current_directory=$(pwd)
-refdir='/home/garcialab/BWA_reference'
+refdir='/home/garcialab/BWA_reference/library_A'
 source activate ngs_env
 BWA=$current_directory/for_BWA
 # cat *.fasta | bwa index -p catted .commands to create concatenated index out of 16 files
@@ -11,7 +11,7 @@ mkdir bcf.dir
 for i in *.fastq
 do
 	seqkit rmdup $i -s -o ${i}_clean_.fq #  I found that If I repeatedly run script C, the reads will be added repeatedly
-	bwa mem -M -t 8 $refdir/library_$1/library_{$1}_cat.fasta ${i}_clean_.fq | samtools sort -o ${i:0:4}_clean_sort.bam
+	bwa mem -M -t 8 $refdir/library_A_cat.fasta ${i}_clean_.fq | samtools sort -o ${i:0:4}_clean_sort.bam
 	samtools index ${i:0:4}_clean_sort.bam # you need a index file for it to find the read counts
 	#bcftools mpileup -Oz --threads 6 --min-MQ 60 -f $refdir/library_${1}/library_${1}_cat.fasta ${i:0:4}_clean_sort.bam > $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.vcf.gz
   	#bcftools call -Oz -m -v --threads 6 --ploidy 1  ${i:0:4}_clean_sort.bam \
@@ -38,7 +38,7 @@ do
 		reads=`samtools view $j $line | wc -l`
 		echo " $reads is the hit of $line" >> ${j:0:4}_statistics/${j:0:-4}_hits.txt
 	done
-done<$refdir/library_$1/US_16_name.txt
+done<$refdir/US_16_name.txt
 ###
 ## samtools depth -a computes depth at all positions
 ## c is the total number of posistions. s is the sum of the coverage ... I think this has to be changed.....
@@ -71,7 +71,7 @@ do
 		mv *15x.fa ${i:0:4}_15x_contig
 		mv *15x.qaul.txt ${i:0:4}_15x_contig
 	done
-done<$refdir/library_$1/US_16_name.txt
+done<$refdir/US_16_name.txt
 ###
 #ivar consensus -t set the bar of percentage to reach when there is variables and -m set the detpth
 ###generate consensus to inport to IGV or geneious #####
