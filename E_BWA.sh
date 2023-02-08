@@ -1,7 +1,7 @@
 #! /bin/bash
 
 current_directory=$(pwd)
-refdir='/home/garcialab/BWA_reference/library_A'
+refdir='/home/garcialab/BWA_reference/cat_US'
 source activate ngs_env
 BWA=$current_directory/for_BWA
 # cat *.fasta | bwa index -p catted .commands to create concatenated index out of 16 files
@@ -11,7 +11,7 @@ mkdir bcf.dir
 for i in *.fastq
 do
 	seqkit rmdup $i -s -o ${i}_clean_.fq #  I found that If I repeatedly run script C, the reads will be added repeatedly
-	bwa mem -M -t 8 $refdir/library_A_cat.fasta ${i}_clean_.fq | samtools sort -o ${i:0:4}_clean_sort.bam
+	bwa mem -M -t 8 $refdir/catted_USregion.fasta ${i}_clean_.fq | samtools sort -o ${i:0:4}_clean_sort.bam
 	samtools index ${i:0:4}_clean_sort.bam # you need a index file for it to find the read counts
 	#bcftools mpileup -Oz --threads 6 --min-MQ 60 -f $refdir/library_${1}/library_${1}_cat.fasta ${i:0:4}_clean_sort.bam > $BWA/bcf.dir/${i:0:4}_clean_sort.mplilup.vcf.gz
   	#bcftools call -Oz -m -v --threads 6 --ploidy 1  ${i:0:4}_clean_sort.bam \
@@ -59,7 +59,7 @@ do
 		mv *.fa ${i:0:4}_20x_contig
 		mv *.txt ${i:0:4}_20x_contig
 	done
-done<$refdir/cat_US/US_16_name.txt
+done<$refdir/US_16_name.txt
 
 while read -r line
 do
