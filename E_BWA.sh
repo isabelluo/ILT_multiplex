@@ -71,7 +71,7 @@ do
 		mv *15x.fa ${i:0:4}_15x_contig
 		mv *15x.qaul.txt ${i:0:4}_15x_contig
 	done
-done<$refdir/cat_US/US_16_name.txt
+done<$refdir/library_${1}/US_16_name.txt
 ###
 #ivar consensus -t set the bar of percentage to reach when there is variables and -m set the detpth
 ###generate consensus to inport to IGV or geneious #####
