@@ -26,6 +26,7 @@ for Read in  *_ReadIDs.txt
 do
 	grep -A3 -f $Read ${Read:0:4}.fastq > $current_directory/for_BWA/${Read:0:-4}.fq
 	grep -v -Fx -- -- $current_directory/for_BWA/${Read:0:-4}.fq > $current_directory/for_BWA/${Read:0:-4}.fastq
-  sequences=`grep -o "read" $final_analysis/${Read:0:-4}.fastq | wc -l`
-	echo "${Read:0:-4} $sequences" >> $current_directory/for_BWA/output_num.txt
+  	LINES=`cat $current_directory/for_BWA/${Read:0:-4}.fastq | wc -l`
+  	SEQUENCES=`expr $LINES / 4`
+  	echo "${Read:0:-4} $SEQUENCES" >> $current_directory/for_BWA/output_num.txt
 done
