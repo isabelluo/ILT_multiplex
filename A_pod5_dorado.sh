@@ -30,7 +30,7 @@ do
     then
         dorado basecaller --min_qscore 7 --emit-fastq --device cuda:auto dna_r9.4.1_e8_hac@v3.3 $current_directory/pod5/$i/. > $current_directory/fastq/$i/.
         ((i++))
-    elif [ $fast5files -ge 2 ] # move the files onece there are more the 2 fast5 files generated to preven empty folder
+    elif [ $pod5files -ge 2 ] # move the files onece there are more the 2 fast5 files generated to preven empty folder
     then
         mv $current_directory/pod5/*.pod5 $current_directory/pod5/$i/.
         dorado basecaller --min-qscore 7 --emit-fastq --device cuda:auto dna_r9.4.1_e8_hac@v3.3 $current_directory/pod5/$i/. > $current_directory/fastq/$i/.
