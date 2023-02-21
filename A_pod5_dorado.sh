@@ -10,6 +10,7 @@ QFILTER=10
      # | tee >( grep '[qs] < ${QFILTER}}' -o ${OUTPUT}.fail.bam - ) \
      #   | grep '[qs] >= ${QFILTER}' -o ${OUTPUT}.pass.bam -
      ### not sure what will emit fastq file like. 
+mkdir $current_directory/fastq
 i=1
 while [ $i -le 100 ] # to call out a variable in the commands, use dollar sign
 do
